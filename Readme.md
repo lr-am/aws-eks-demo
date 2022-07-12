@@ -1,4 +1,4 @@
-# Deploy EKS cluster with Prometheus and Grafana using Terraform
+# Deploy EKS cluster with Terraform
 
 ## Requirements
 
@@ -13,7 +13,5 @@
     terraform init
     terraform apply
 3.- Use the following command to get the kubeconfig of the cluster:
-    aws eks update-kubeconfig --name eks_cluster_demo 
-3.- After terraform execution, you will have an EKS cluster environment with Prometheus and Grafana 
-    deployed
+    aws eks update-kubeconfig --name eks_cluster_demo
 ```
