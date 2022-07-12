@@ -1,0 +1,46 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: runtime
+---
+apiVersion: apps/v1           
+kind: Deployment              
+metadata:
+  name: shellinabox
+  namespace: runtime  
+  labels:                     
+    app: shellinabox
+spec:
+  replicas: 1                 
+  selector:
+    matchLabels:              
+      app: shellinabox
+  template:                   
+    metadata:
+      labels:                 
+        app: shellinabox
+    spec:
+      containers:
+      - name: shellinabox
+        image: sspreitzer/shellinabox:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+          - name: shellinabox
+            containerPort: 4200 # The port that the container exposes
+
+---
+apiVersion: v1                
+kind: Service                 
+metadata:                     
+  name: shellinabox-svc
+  namespace: runtime
+  labels:                     
+    app: shellinabox-svc
+spec:                         
+  type: NodePort             
+  selector:
+    app: shellinabox  
+  ports:                      
+  - name: shellinabox
+    port: 4200
+    targetPort: 4200

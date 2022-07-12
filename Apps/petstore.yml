@@ -1,0 +1,54 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: petstore
+
+---
+apiVersion: apps/v1           
+kind: Deployment              
+metadata:
+  name: petstore-app
+  namespace: petstore    
+  labels:                     
+    app: petstore-app
+spec:
+  replicas: 1                 
+  selector:
+    matchLabels:              
+      app: petstore-app
+  template:                   
+    metadata:
+      labels:                 
+        app: petstore-app
+    spec:
+      containers:
+      - name: petstore-app
+        image: swaggerapi/petstore
+        imagePullPolicy: IfNotPresent
+        ports:
+          - name: petstore
+            containerPort: 8080 # The port that the container exposes
+        env:
+          - name: SWAGGER_HOST
+            value: http://{SWAGGER_HOST}:{PORT}
+          - name: SWAGGER_URL
+            value: http://{SWAGGER_HOST}:{PORT}
+          - name: SWAGGER_BASE_PATH
+            value: /v2 
+---
+apiVersion: v1                
+kind: Service                 
+metadata:                     
+  name: petstore-app
+  namespace: petstore
+  labels:                     
+    app: petstore-app
+spec:                         
+  #type: ClusterIP  
+  type: LoadBalancer            
+  selector:
+    app: petstore-app   
+  ports:                      
+  - name: petstore
+    port: 8080
+    targetPort: 8080
