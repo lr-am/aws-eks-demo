@@ -32,6 +32,7 @@ resource "aws_eks_cluster" "aws_eks" {
   role_arn = aws_iam_role.eks_cluster.arn
 
   vpc_config {
+    endpoint_public_access = false
     #Indicate the vpc subnet ids
     subnet_ids = ["subnet-id1", "subnet-id2", "subned-id3"]
   }
